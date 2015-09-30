@@ -5,24 +5,30 @@
 main()
 {
     char string[] = "adoro perigon";
-    int i;
+    int count;
     int frequency = 0;
     char *occours;
     char searched_chars[50];
 
-    for(i = 0; i>strlen(string); i++)
+    for(count = 0; count<strlen(string); count++)
     {
-        if (strchr(searched_chars, string[i]) != NULL)
+        printf("letter: %c\n", string[count]);
+        if (strchr(searched_chars, string[count]) == NULL)
         {
-            occours = strchr(string, string[i]);
+            occours = strchr(string, string[count]);
             while(occours != NULL)
             {
+                printf("repetiu\n");
                 frequency++;
-                occours = strchr(occours+1, string[i]);
+                occours = strchr(occours+1, string[count]);
             }
-            searched_chars[i] = string[i];
-
-            /// char and frenquency to queue
+            searched_chars[count] = string[count];
+            printf("Frequency: %d\n", frequency);
+            frequency = 0;
+            printf("\n");
+            /// char and frequency to queue
+            /// queue(string[count], frequency)
         }
     }
+
 }
