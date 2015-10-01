@@ -1,23 +1,13 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
-
-typedef struct pqueue PriorityQueue;
-PriorityQueue* createPriorityQueue();
-PriorityQueue* enqueue(PriorityQueue *pq, char character, int priority);
-int dequeue(PriorityQueue *pq);
-int maximum(PriorityQueue *pq);
-int QueueisEmpty(PriorityQueue *pq);
-void printPriorityQueue(PriorityQueue *pq);
-typedef struct Node Node;
+#include "priorityqueue_declarations.h"
 
 struct Node {
 char character;
 int priority;
 Node *nextNode;
 };
-
-
 
 struct pqueue {
 Node *first;
@@ -61,14 +51,4 @@ PriorityQueue* createPriorityQueue(){
 	PriorityQueue* pq = (PriorityQueue*)malloc(sizeof(PriorityQueue));
     pq->first = NULL;
 	return pq;
-}
-
-int main() {
-
-    PriorityQueue* pq = createPriorityQueue();
-    enqueue(pq, 'a', 3);
-    enqueue(pq, 'b', 4);
-    enqueue(pq, 'c', 5);
-    printPriorityQueue(pq);
-
 }
