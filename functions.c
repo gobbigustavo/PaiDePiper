@@ -8,9 +8,10 @@ void StringtoQueue(char string[]){
     int count;
     int frequency = 0;
     char *occours;
-    char searched_chars[50];
+    char searched_chars[];
 
     PriorityQueue* pq = createPriorityQueue();
+
     for(count = 0; count<strlen(string); count++){
         ///printf("letter: %c\n", string[count]);
         if (strchr(searched_chars, string[count]) == NULL){
@@ -26,6 +27,7 @@ void StringtoQueue(char string[]){
             ///printf("\n");
             }
     }
+    printPriorityQueue(pq);
 }
 
 char *ExtractFile(char file_address[])
