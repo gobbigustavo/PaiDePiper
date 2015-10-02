@@ -8,7 +8,7 @@ void StringtoQueue(char string[]){
     int count;
     int frequency = 0;
     char *occours;
-    char searched_chars[];
+    char searched_chars[50];
 
     PriorityQueue* pq = createPriorityQueue();
 
