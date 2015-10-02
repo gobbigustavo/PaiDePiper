@@ -4,16 +4,26 @@
 #include "functions_declarations.h"
 #include "priorityqueue.c"
 
+char* alloc_char_array(int n){
+    char* array = (char*)calloc(n, sizeof(char));
+    if(array == NULL){
+        puts("Erro aloc. vetor");
+        exit(0);
+    }
+    return array;
+}
+
 void StringtoQueue(char string[]){
     int count;
     int frequency = 0;
-    char *occours;
-    char searched_chars[];
+    char* occours;
+    char searched_chars[500];
+    ///searched_chars = alloc_char_array(strlen(string));
 
     PriorityQueue* pq = createPriorityQueue();
 
     for(count = 0; count<strlen(string); count++){
-        ///printf("letter: %c\n", string[count]);
+        printf("letter: %c\n", string[count]);
         if (strchr(searched_chars, string[count]) == NULL){
             occours = strchr(string, string[count]);
             while(occours != NULL){
@@ -21,13 +31,15 @@ void StringtoQueue(char string[]){
                 occours = strchr(occours+1, string[count]);
             }
             searched_chars[count] = string[count];
-            ///printf("Frequency: %d\n", frequency);
+            printf("Frequency: %d\n", frequency);
             enqueue(pq, string[count], frequency);
             frequency = 0;
-            ///printf("\n");
+            printf("\n");
             }
     }
+    ///free(searched_chars);
     printPriorityQueue(pq);
+    freePriorityQueue(pq);
 }
 
 char *ExtractFile(char file_address[])
