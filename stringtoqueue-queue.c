@@ -12,16 +12,18 @@ void printPriorityQueue(PriorityQueue *pq);
 typedef struct Node Node;
 
 struct Node {
-char character;
-int priority;
-Node *nextNode;
+  char character;
+  int priority;
+  Node *nextNode;
 };
-
-
 
 struct pqueue {
-Node *first;
+  Node *first;
 };
+
+PriorityQueue* isEmpty(PriorityQueue *pq){
+  return (pq->first==NULL);
+}
 
 PriorityQueue* enqueue(PriorityQueue *pq, int i, int p) {
     Node *newNode = (Node*) malloc(sizeof(Node));
@@ -40,4 +42,14 @@ PriorityQueue* enqueue(PriorityQueue *pq, int i, int p) {
         current->nextNode = newNode;
     }
     return pq;
+}
+
+PriorityQueue* dequeue(PriorityQueue *pq){
+  if(!isEmpty(pq)){
+    Node *current = pq->first;
+    pq->first = pq->first->nextNode;
+    current->nextNode = NULL;
+    return current;
+  }
+  return NULL;
 }
