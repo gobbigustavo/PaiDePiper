@@ -10,6 +10,10 @@ int maximum(PriorityQueue *pq);
 int isEmpty(PriorityQueue *pq);
 void printPriorityQueue(PriorityQueue *pq);
 typedef struct Node Node;
+typedef struct pqTree{
+  int treeSize;
+  Node *first;
+}pqueueTree;
 
 struct Node {
   char character;
@@ -53,3 +57,9 @@ PriorityQueue* dequeue(PriorityQueue *pq){
   }
   return NULL;
 }
+ pqueueTree* createTree{
+   pqueueTree* tree = (pqueueTree*)malloc(sizeof(pqueueTree));
+   tree->first = NULL;
+   tree->treeSize = 0;
+   return tree;
+ }
