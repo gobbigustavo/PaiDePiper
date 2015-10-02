@@ -1,27 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-struct node {
-    int item;
+struct ListNode {
+    char item[8];
     struct node *nextNode;
 };
 
-typedef struct node Node;
+typedef struct ListNode ListNode;
 
-Node *createList() {
+ListNode *createList() {
     return NULL;
 }
 
-int isEmpty(Node *first) {
+int isEmpty(ListNode *first) {
     return (first == NULL);
 }
 
-Node *insertNode(Node *first, int item) {
-    Node *newNode = (Node*) malloc(sizeof(Node));
-    newNode->item = item;
+ListNode *insertNode(ListNode *first, char item[8]) {
+    ListNode *newNode = (ListNode*) malloc(sizeof(ListNode));
+    strcpy(newNode->item, item);
     newNode->nextNode = first;
+    first = newNode;
 }
-
+/*
 Node *searchNode(Node *first, int item) {
     Node *pointer;
     for(pointer = first; pointer != NULL; pointer = pointer->nextNode) {
@@ -57,3 +58,4 @@ void printList(Node *first) {
         printf("%d", pointer->item);
     }
 }
+*/
