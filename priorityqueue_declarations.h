@@ -4,6 +4,7 @@
 typedef struct pqueue PriorityQueue;
 PriorityQueue* createPriorityQueue();
 PriorityQueue* enqueue(PriorityQueue *pq, char character, int priority);
+PriorityQueue* StringtoQueue(char string[]);
 int dequeue(PriorityQueue *pq);
 int maximum(PriorityQueue *pq);
 int QueueisEmpty(PriorityQueue *pq);

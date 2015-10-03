@@ -13,41 +13,11 @@ char* alloc_char_array(int n){
     return array;
 }
 
-void StringtoQueue(char string[]){
-    int count;
-    int frequency = 0;
-    char* occours;
-    char searched_chars[256];
-    ///searched_chars = alloc_char_array(strlen(string));
-
-    PriorityQueue* pq = createPriorityQueue();
-
-    for(count = 0; count<strlen(string); count++){
-        ///printf("letter: %c\n", string[count]);
-        if (strchr(searched_chars, string[count]) == NULL){
-            searched_chars[count] = string[count];
-            occours = strchr(string, string[count]);
-            while(occours != NULL){
-                frequency++;
-                occours = strchr(occours+1, string[count]);
-            }
-            ///printf("Frequency: %d\n", frequency);
-            enqueue(pq, string[count], frequency);
-            frequency = 0;
-            ///printf("\n");
-            }
-    }
-    ///free(searched_chars);
-    printPriorityQueue(pq);
-    freePriorityQueue(pq);
-}
-
-void StringtoQueue2(char string[]){
+PriorityQueue* StringtoQueue(char string[]){
     int count;
     int frequency = 0;
     char* occours;
     char ascii[256] = {0};
-    ///searched_chars = alloc_char_array(strlen(string));
 
     PriorityQueue* pq = createPriorityQueue();
 
@@ -57,27 +27,13 @@ void StringtoQueue2(char string[]){
 
     for(count = 0; count<256; count++){
         if(ascii[count]>=1){
-            printf("Char: %c, freq: %d\n", count, ascii[count]);
+            enqueue(pq, count, ascii[count]);
         }
     }
+    return pq;
 }
 
-char *ExtractFile(char file_address[])
-{
-    FILE *file = fopen(file_address,"r");
-    fseek(file, 0L, SEEK_END);
-    int length = ftell(file);
-    fseek(file, 0L, SEEK_SET);
-    char *string = (char*) malloc(sizeof (char) * length + 1);
-    int count;///Count = String size
-    for(count = 0;count < length; count++){
-        string[count] = fgetc(file);
-    }
-    string[length] = '\0';
-    return string;
-}
-
-char *ExtractFile2(char file_address[]){
+char *ExtractFile(char file_address[]){
     FILE *fileptr;
     char *buffer;
     long filelen;
