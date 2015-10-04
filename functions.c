@@ -15,15 +15,7 @@ char* alloc_char_array(int n){
 
 PriorityQueue* StringtoQueue(char string[]){
     int count;
-    int frequency = 0;
-<<<<<<< HEAD
-    char *occours;
-    char searched_chars[50];
-=======
-    char* occours;
     char ascii[256] = {0};
->>>>>>> Testing-Dynamic-Array
-
     PriorityQueue* pq = createPriorityQueue();
 
     for(count = 0; count<strlen(string); count++){
