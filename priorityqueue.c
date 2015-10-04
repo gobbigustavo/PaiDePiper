@@ -13,6 +13,14 @@ struct pqueue {
 Node *first;
 };
 
+void freePriorityQueue(PriorityQueue* pq){
+	Node *current;
+	while(pq->first != NULL){
+		current = pq->first;
+		pq->first = pq->first->nextNode;
+		free(current);
+	}
+}
 void printPriorityQueue(PriorityQueue* pq){
 	Node *current = pq->first;
 	while(current != NULL){

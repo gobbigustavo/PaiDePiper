@@ -3,6 +3,8 @@
 
 char *ExtractFile(char file_address[]);
 
-void StringtoQueue(char string[]);
+char* alloc_array_char(int n);
+
+
 
 #endif

@@ -4,45 +4,54 @@
 #include "functions_declarations.h"
 #include "priorityqueue.c"
 
-void StringtoQueue(char string[]){
+char* alloc_char_array(int n){
+    char* array = (char*)calloc(n, sizeof(char));
+    if(array == NULL){
+        puts("Erro aloc. vetor");
+        exit(0);
+    }
+    return array;
+}
+
+PriorityQueue* StringtoQueue(char string[]){
     int count;
     int frequency = 0;
+<<<<<<< HEAD
     char *occours;
     char searched_chars[50];
+=======
+    char* occours;
+    char ascii[256] = {0};
+>>>>>>> Testing-Dynamic-Array
 
     PriorityQueue* pq = createPriorityQueue();
 
     for(count = 0; count<strlen(string); count++){
-        ///printf("letter: %c\n", string[count]);
-        if (strchr(searched_chars, string[count]) == NULL){
-            occours = strchr(string, string[count]);
-            while(occours != NULL){
-                frequency++;
-                occours = strchr(occours+1, string[count]);
-            }
-            searched_chars[count] = string[count];
-            ///printf("Frequency: %d\n", frequency);
-            enqueue(pq, string[count], frequency);
-            frequency = 0;
-            ///printf("\n");
-            }
+        ascii[(int)string[count]] = ascii[(int)string[count]] + 1;
     }
-    printPriorityQueue(pq);
+
+    for(count = 0; count<256; count++){
+        if(ascii[count]>=1){
+            enqueue(pq, count, ascii[count]);
+        }
+    }
+    return pq;
 }
 
-char *ExtractFile(char file_address[])
-{
-    FILE *file = fopen(file_address,"r");
-    fseek(file, 0L, SEEK_END);
-    int length = ftell(file);
-    fseek(file, 0L, SEEK_SET);
-    char *string = (char*) malloc(sizeof (char) * length + 1);
-    int count;
-    for(count = 0;count < length; count++){
-        string[count] = fgetc(file);
-    }
-    string[length] = '\0';
-    return string;
+char *ExtractFile(char file_address[]){
+    FILE *fileptr;
+    char *buffer;
+    long filelen;
+
+    fileptr = fopen(file_address, "rb");  // Open the file in binary mode
+    fseek(fileptr, 0, SEEK_END);          // Jump to the end of the file
+    filelen = ftell(fileptr);             // Get the current byte offset in the file
+    rewind(fileptr);                      // Jump back to the beginning of the file
+
+    buffer = (char *)malloc((filelen+1)*sizeof(char)); // Enough memory for file + \0
+    fread(buffer, filelen, 1, fileptr); // Read in the entire file
+    fclose(fileptr); // Close the file
+    return buffer;
 }
 
 /* EXAMPLE OF USAGE
