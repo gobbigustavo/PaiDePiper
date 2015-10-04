@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <limits.h>
 #include "BinarySearchTree.c"
-#include "AVL.c"
+#include "List.c"
 #define SIZE 20
 
 struct point {
@@ -41,9 +41,9 @@ void bubleSort(Point array[], const int size) {
 int main() {
     int i, option;
     Point arrayBinarySearchTree[SIZE];
-    Point arrayAVLTree[SIZE];
+    Point arrayList[SIZE];
     Tree* BinarySearchTree = createEmptyTree();
-    TreeAVL* AVLTree = createEmptyAVLTree();
+    Node* List = createList();
     printf("Count and plot data\nBinary Search Tree vs. AVL Tree\n\n");
     printf("To continue, type 1\nTo exit, type ant other key\n\n");
     printf("Your option: ");
@@ -52,18 +52,18 @@ int main() {
     if(option == 1) {
         for(i = 0; i < 10000; i++) {
             BinarySearchTree = insertNode(BinarySearchTree, i);
-            AVLTree = insertNodeAVL(AVLTree, i);
+            List = insertNodeList(List, i);
         }
 
         for(i = 0; i < SIZE; i++) {
             int random = rand() % 10000;
-            arrayAVLTree[i].x = random;
-            arrayAVLTree[i].y = binarySearchAVL(AVLTree, random, 0);
+            arrayList[i].x = random;
+            arrayList[i].y = searchNode(List, random, 0);
             arrayBinarySearchTree[i].x = random;
             arrayBinarySearchTree[i].y = binarySearch(BinarySearchTree, random, 0);
         }
 
-        bubleSort(arrayAVLTree, SIZE);
+        bubleSort(arrayList, SIZE);
         bubleSort(arrayBinarySearchTree, SIZE);
 
         printf("\nBinarySearchTree array - R Code:\n\n");
@@ -81,18 +81,18 @@ int main() {
         printf("plot(x, y)\n\n");
         printf("dev.off()\n");
 
-        printf("\nAVLTree array - R Code:\n\n");
-        printf("png(\"AVLTreePlot.png\")\n\n");
+        printf("\nList array - R Code:\n\n");
+        printf("png(\"ListPlot.png\")\n\n");
         printf("x = c(");
         for(i = 0; i < SIZE - 1; i++) {
-            printf("%d, ", arrayAVLTree[i].x);
+            printf("%d, ", arrayList[i].x);
         }
-        printf("%d)\n", arrayAVLTree[i].x);
+        printf("%d)\n", arrayList[i].x);
         printf("y = c(");
         for(i = 0; i < SIZE - 1; i++) {
-            printf("%d, ", arrayAVLTree[i].y);
+            printf("%d, ", arrayList[i].y);
         }
-        printf("%d)\n", arrayAVLTree[i].y);
+        printf("%d)\n", arrayList[i].y);
         printf("plot(x, y)\n\n");
         printf("dev.off()");
     } else {

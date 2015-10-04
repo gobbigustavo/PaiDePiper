@@ -22,15 +22,15 @@ Node *createList() {
 // FUNCTION ISEMPTY
 // CHECKS IF THE FIRST ELEMENT OF THE LIST IS NULL
 // IF TRUE, THE LIST IS EMPTY
-int isEmpty(Node *first) {
+int isEmptyList(Node *first) {
     return (first == NULL);
 }
 
 // FUCNTION INSERTNODE
 // INSERTS A NODE AT THE BEGINNING OF THE LIST
-Node *insertNode(FILE *file, Node *first) {
+Node *insertNodeList(Node *first, int item) {
     Node *newNode = (Node*) malloc(sizeof(Node));
-    newNode->item = file;
+    newNode->item = item;
     newNode->nextNode = first;
     return newNode;
 }
@@ -42,4 +42,15 @@ Node *insertNodeFillTree(char symbol, Node *first) {
     newNode->symbol = symbol;
     newNode->nextNode = first;
     return newNode;
+}
+
+int searchNode(Node *first, int item, int comparisons) {
+    Node *p;
+    for (p = first; p != NULL; p = p->nextNode) {
+        comparisons++;
+        if (p->item == item) {
+            return comparisons;
+            }
+        }
+ return -1;
 }
