@@ -5,7 +5,6 @@
 
 main()
 {
-    char string[] = "teste2.txt";
-
+    char string[] = "teste_big.txt";
     StringtoQueue(ExtractFile(string));
 }
