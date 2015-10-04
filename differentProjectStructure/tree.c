@@ -18,8 +18,22 @@ typedef struct tree{
   Node *first;
 }Tree;
 
-int queueLength(Queue *pq){
-    Node *current = pq->first;
+int queueisEmpty(Queue *queue){
+    return(queue->first == NULL);
+}
+
+Queue *dequeue(Queue *queue){
+  if(!queueisEmpty){
+    Node *current = queue->first;
+    queue->first = queue->first->leftNode;
+    current->nextNode = NULL;
+    return current;
+  }
+  return NULL;
+}
+
+int queueLength(Queue *queue){
+    Node *current = queue->first;
     int counter = 0;
     while(current != NULL){
       current = current->nextNode;
@@ -35,13 +49,13 @@ Tree *createTreeFromQueue(){
   return tree;
 }
 
-Tree *createTree(Queue *pq){
+Tree *createTree(Queue *queue){
   Node *leftNode, *rightNode, *newNode;
   Tree *huffTree = createTreeFromQueue();
   int frequencySum;
-  while(queueLength(pq)>1){
-    leftNode = dequeue(pq);
-    rightNode = dequeue(pq);
+  while(queueLength(queue)>1){
+    leftNode = dequeue(queue);
+    rightNode = dequeue(queue);
     frequencySum = leftNode->frequency + rightNode->frequency;
   }
   huffTree->first = newNode;
