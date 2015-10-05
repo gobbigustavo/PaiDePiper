@@ -26,6 +26,8 @@ Tree *createTree(int item, Tree *left, Tree *right) {
     tree->item = item;
     tree->left = left;
     tree->right = right;
+
+    return tree;
 }
 
 // FUNCTION ISEMPTY

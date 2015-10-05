@@ -6,7 +6,7 @@
 // REPRESENTS A NODE IN A LINKED LIST
 // HAS A FILE AS VALUE AND A PONTEIR TO THE NEXT NODE IN THE LIST
 struct Node {
-    FILE *item;
+    int item;
     char symbol; // JUST FOR THE TREE FILL
     struct Node *nextNode;
 };
@@ -44,7 +44,7 @@ Node *insertNodeFillTree(char symbol, Node *first) {
     return newNode;
 }
 
-int searchNode(Node *first, int item, int comparisons) {
+int searchNodeList(Node *first, int item, int comparisons) {
     Node *p;
     for (p = first; p != NULL; p = p->nextNode) {
         comparisons++;

@@ -38,6 +38,17 @@ void bubleSort(Point array[], const int size) {
     }
 }
 
+void bubleSort2(Point array[], const int size) {
+    int i, j;
+    for(i = 0; i < (size - 1); i++) {
+        for(j = 0; j < (size - (i + 1)); j++) {
+                if(array[j].x < array[j + 1].x) {
+                    swap(&array[j], &array[j + 1]);
+                }
+        }
+    }
+}
+
 int main() {
     int i, option;
     Point arrayBinarySearchTree[SIZE];
@@ -51,19 +62,19 @@ int main() {
 
     if(option == 1) {
         for(i = 0; i < 10000; i++) {
-            BinarySearchTree = insertNode(BinarySearchTree, i);
-            List = insertNodeList(List, i);
+            BinarySearchTree = insertNode(BinarySearchTree, rand() % 10000);
+            List = insertNodeList(List, rand() % 10000);
         }
 
         for(i = 0; i < SIZE; i++) {
             int random = rand() % 10000;
             arrayList[i].x = random;
-            arrayList[i].y = searchNode(List, random, 0);
+            arrayList[i].y = searchNodeList(List, random, 0);
             arrayBinarySearchTree[i].x = random;
             arrayBinarySearchTree[i].y = binarySearch(BinarySearchTree, random, 0);
         }
 
-        bubleSort(arrayList, SIZE);
+        ///bubleSort2(arrayList, SIZE);
         bubleSort(arrayBinarySearchTree, SIZE);
 
         printf("\nBinarySearchTree array - R Code:\n\n");
