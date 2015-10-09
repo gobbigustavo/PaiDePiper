@@ -22,6 +22,16 @@ ListNode *insertNode(ListNode *first, char item[8]) {
     newNode->nextNode = first;
     first = newNode;
 }
+
+void printListToFile(Node *first, FILE *file) {
+    Node *pointer;
+    for(pointer = first; pointer != NULL; pointer = pointer->nextNode) {
+        for(count = 0; count <=8; count++){
+            fprintf(file, pointer->item[count]);
+        }
+    }
+    fclose(file);
+}
 /*
 Node *searchNode(Node *first, int item) {
     Node *pointer;
