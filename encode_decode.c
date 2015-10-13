@@ -197,10 +197,10 @@ typedef struct HeaderFiles HeaderFiles;
 
 
 
-    rebuildTree(HeaderFiles *treeSize, HeaderFiles *tree){
+    void rebuildTree(HeaderFiles *treeSize, HeaderFiles *tree){
         int rt_index;
 
-        Tree *rebuiltTree;
+        Tree *rebuiltTree; ///criar nó vazio
         Tree *aux = NULL;
 
         for(rt_index = 0; rt_index < treeSize; rt_index++){
@@ -220,7 +220,7 @@ typedef struct HeaderFiles HeaderFiles;
                         rebuiltTree->visited = 1;
                         rebuitTree->parent = aux;
                     }
-                   else if(rebuiltTree->rightNode == NULL){
+                   else if((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
                        aux = rebuiltTree;
                        rebuiltTree = rebuiltTree->rightNode
                        rebuiltTree->item = tree[rt_index];
@@ -236,17 +236,28 @@ typedef struct HeaderFiles HeaderFiles;
                 }
             }
             else{///leaf case
-                aux = rebuiltTree;
-                if(rebuiltTree->leftNode == NULL)
+                aux = rebuiltTree; ///vai até a folha, preenche ela e voltra pra o nó do meio
+                if(rebuiltTree->leftNode == NULL){
                     rebuiltTree = rebuiltTree->leftNode;
                     rebuiltTree->item = tree[rt_index];
                     rebuiltTree->visited = 1;
-                    rebuitTree->parent = aux
-
-
-
+                    rebuitTree->parent = aux;
+                }
+                else if ((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
+                    rebuitTree = rebuitTree->rightNode;
+                    rebuiltTree->item = tree[rt_index];
+                    rebuiltTree->visited = 1;
+                    rebuitTree->parent = aux;
+                }
+                aux = rebuitTree->parent->parent;
+                rebuiltTree = rebuiltTree->parent;
+                rebuitTree->parent = aux;
+                if((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode != NULL)){
+                    aux = rebuitTree->parent->parent;
+                    rebuiltTree = rebuiltTree->parent;
+                    rebuitTree->parent = aux;
+                }
             }
-
         }
     }
 
