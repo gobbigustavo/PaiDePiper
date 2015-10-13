@@ -30,6 +30,11 @@ typedef struct Node Node;
 struct Hash{
     Node text[text_size];
 };
+
+char getCode(char byte) {
+    /// pegar o código do byte na hash
+    return ' ';
+}
 typedef struct Hash Hash;
 
 struct Queue{
@@ -46,9 +51,11 @@ List *CreateEmptyList(){
 }
 
 struct Tree {
-    int value;
-    struct Tree *left;
-    struct Tree *right;
+    int item;
+    int visited = 0;
+    struct Tree *leftNode;
+    struct Tree *rightNode;
+    struct Tree *parent;
 };
 typedef struct Tree Tree;
 
@@ -57,52 +64,195 @@ Tree *HuffTree(char caracter){
     return code_array;
 }
 
+///--------------------------------------------------ENCODE----------------------------------------------------------------------//
+
 ///o arquivo do texto tem q ser colocado numa string text com cada caractere em uma posição
-encode(char text, Tree *HuffTree){  ///text -  texto completo descomprimido
-		unsigned char bit_array[MAX_SIZE]; ///array correspondente a 1 byte
-		int index = 0;
-		int code_index = 0;
-		int code_text_index = 0;
-		int text_index = 0;
-		int code_length = 0; ///quantidade totais de bits do arquivo comprimido
-		int bit_length = 0; ///quantidade de bit preenchidos de 1 byte
+encode(char uncompressed_text){
 
-		ListNode *first;
-		first->item = NULL;
+    Hash* codeEntry;
 
-		Hash* code;
-		memset(bit_array, 0, sizeof(char)*MAX_SIZE);
+	ListNode *full_text = createList; ///lista composta de todos os array de bits pós compressão
 
-		ListNode *full_text = createList; ///lista composta de todos os array de bits pós compressão
+    char compressed_byte = 0;
+    int compressed_byte_length = 0;
+    int compressed_text_length = 0;
+    int uncompressed_text_index;
 
-		while(index < sizeof(text)){
-        ///code recebe a hash pós árvore do 1 caractere do texto com 1 nó text contendo o caractere, o code comprimido e o tamanho do code
-            code = HuffTree(text[text_index]); ///vai mudar dependendo da estrutura da clara
+    for(uncompressed_text_index = 0; uncompressed_text_index < sizeof(uncompressed_text); uncompressed_text_index++) {
+        char uncompressed_byte = uncompressed_text[uncompressed_text_index];
+        Code codeEntry = getCode(uncompressed_byte); ///fazer função getCode
 
-			while(code_text_index < code[code_index]->text[text_size]->char_code_size){ ///loop pra cada caractere de cada codigo de cada letra pós arvore
-                ///deslocar os bits pra preencher o array de 1 byte
-				if(code->text[code_index]->char_code[code_index] == '1'){
-					code_length++;
-					bit_array[MAX_SIZE] = (bit_array[MAX_SIZE] << 1) | 1;
-					bit_length ++;
-				}
-				else
-					code_length++;
-					bit_array[MAX_SIZE] = (bit_array[MAX_SIZE] << 1);
-                    bit_length ++;
-				if(bit_length == MAX_SIZE) ///se atingir 8 guarda na lista, zera e começa outro byte, independente de ta no meio de uma letra
-					full_text = insertNode(first, bit_array);
-					bit_length = 0;
-			code_text_index++;
-			code_index++;
-			}
-		index++;
-		}
-    ///salvar lixo
-		if((bit_length != 0) && (bit_length < MAX_SIZE)){
-			bit_array[MAX_SIZE] = (bit_array[MAX_SIZE]) << (MAX_SIZE - bit_length);
-			full_text = AddListNode(bit_array);
-			int trash = MAX_SIZE - bit_length;
-		}
+        for(int code_index = 0; code_index < code_size; code_index++) {
+            if(codeEntry->code[code_index] == 1) {
+                compressed_byte = (compressed_byte << 1) | 1;
+            } else {
+                compressed_byte = (compressed_byte << 1);
+            }
+            compressed_byte_length++;
+            compressed_text_length++;
+            if(compressed_byte_length == 8) {
+                addToList(compressed_byte);
+                compressed_byte_length = 0;
+            }
+        }
+    }
+
+    int trash_size = 0;
+
+    if(compressed_byte_length != 0) {
+        trash_size = 8 - compressed_byte_length;
+        compressed_byte = compressed_byte << trash_size;
+        addToList(compressed_byte);
+    }
 }
+
+    createHeader(int trash_size, unsigned int treeSize){
+        unsigned char byte1, byte2, aux;
+        byte1 = trash_size << 5;
+        aux = treeSize >>8;
+        byte1 = byte1 | aux;
+        treeSize = treeSize & 255;
+        byte2 = (unsigned char) treeSize;
+        ///------------- sobrescrever --------------///
+    }
+
+///--------------------------------------------------ENCODE----------------------------------------------------------------------//
+
+
+
+///--------------------------------------------------DECODE----------------------------------------------------------------------//
+
+
+    int getCodeSize(File* compressedFile){
+        File *file = fopen(compressedFile, "r");
+        fseek(file, 0, SEEK_END);
+        long int fileSize = ftell(file);
+        return fileSize;
+    }
+
+    int getCodeBitSize(long int fileSize, int trash){
+        long int bitFileSize = (fileSize - trash) * 8; ///quantidade de bits do arquivo sem o lixo
+        return bitFileSize;
+    }
+
+decode(File *compressedFile){
+    fopen(compressedFile); ///descobrir se precisa de alguma outra função pra ler o arquivo
+    getCodeSize(File *compressedFile); ///fazer função pra pegar o tamanho
+    File *file =
+
+
+}
+
+
+
+
+
+//------ READHEADER ---------//
+struct HeaderFiles{
+    int trash;
+    unsigned char tree;
+    unsigned int treeSize;
+};
+typedef struct HeaderFiles HeaderFiles;
+
+
+    void readHeader(File *compressedFile){
+        File *file = fopen(compressedFile, "r")
+        unsigned char byte1, byte2;
+        unsigned int treeSize;
+        fread(&byte1, 1, 1, compressedFile);
+        fread(&byte2, 1, 1, compressedFile);
+
+        int trash = getTrash(byte1)
+        unsigned int treeSize = getTreeSize(byte1, byte2);
+
+        unsigned char *tree = malloc(treeSize * (sizeof(unsigned char)));
+
+        int tree_index;
+        for (tree_index = 0; tree_index < treeSize; tree_index++){
+            fread(&tree[tree_index], 1, 1, compressedFile);
+        }
+        HeaderFiles->tree = malloc(treeSize * (sizeof(unsigned char)));
+
+        HeaderFiles->tree = tree;
+        HeaderFiles->trash = trash;
+        HeaderFiles->treeSize = treeSize;
+    }
+
+
+    int getTrash(unsigned char byte1){
+        int trash;
+        trash = (int) byte1 >> 5;
+        return trash;
+    }
+
+    unsigned int getTreeSize(unsigned char byte1, unsigned char byte2){
+        unsigned int treeSize = byte1  & 31; ///set the first 3 bits 0
+        treeSize = treeSize << 8; ///coloca os bits já existentes 8 casas pra esquerda pois eles são o começo do tamanho e o fim é o byte 2
+        treeSize = treeSize | (unsigned int) byte2; ///coloca o byte 2 no fim do treeSize, juntando assim os bits do tamanho completo da arvore
+        return treeSize;
+    }
+
+//------END OF READHEADER ---------//
+
+
+
+    rebuildTree(HeaderFiles *treeSize, HeaderFiles *tree){
+        int rt_index;
+
+        Tree *rebuiltTree;
+        Tree *aux = NULL;
+
+        for(rt_index = 0; rt_index < treeSize; rt_index++){
+
+            if(tree[rt_index] == '*'){
+                if(rebuiltTree->visited == 0){ ///Root case
+                    rebuiltTree->item = tree[rt_index];
+                    rebuiltTree->visited = 1;
+                    rebuiltTree->parent = aux;
+                    aux = rebuiltTree;
+                }
+                else{
+                    if(rebuiltTree->leftNode == NULL){
+                        aux = rebuiltTree;
+                        rebuiltTree = rebuiltTree->leftNode;
+                        rebuiltTree->item = tree[rt_index];
+                        rebuiltTree->visited = 1;
+                        rebuitTree->parent = aux;
+                    }
+                   else if(rebuiltTree->rightNode == NULL){
+                       aux = rebuiltTree;
+                       rebuiltTree = rebuiltTree->rightNode
+                       rebuiltTree->item = tree[rt_index];
+                       rebuiltTree->visited = 1;
+                       rebuiltTree->parent = aux;
+                   }
+                   else if ((rebuiltTree->leftNode !=NULL) && (rebuiltTree->rightNode !=NULL)){
+                        aux = rebuiltTree->parent->parent;
+                        rebuiltTree = rebuiltTree->parent;
+                        rebuiltTree->parent = aux;
+
+                    }
+                }
+            }
+            else{///leaf case
+                aux = rebuiltTree;
+                if(rebuiltTree->leftNode == NULL)
+                    rebuiltTree = rebuiltTree->leftNode;
+                    rebuiltTree->item = tree[rt_index];
+                    rebuiltTree->visited = 1;
+                    rebuitTree->parent = aux
+
+
+
+            }
+
+        }
+    }
+
+
+
+
+
+///--------------------------------------------------DECODE----------------------------------------------------------------------///
 
