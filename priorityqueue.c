@@ -98,8 +98,8 @@ PriorityQueue* StringtoQueue(unsigned char string[]){
 
 Node *dequeue(PriorityQueue *pq){
   if(!QueueisEmpty){
-    Node *current = queue->first;
-    queue->first = queue->first->leftNode;
+    Node *current = pq->first;
+    pq->first = pq->first->leftNode;
     current->nextNode = NULL;
     return current;
   }

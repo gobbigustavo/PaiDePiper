@@ -5,12 +5,12 @@ typedef struct Node Node;
 typedef struct pqueue PriorityQueue;
 PriorityQueue* createPriorityQueue();
 PriorityQueue* enqueue(PriorityQueue *pq, unsigned char character, int frequency);
-PriorityQueue* insertTreeNodeOnPQ(PriorityQueue* pq, unsigned char, int frequency, Node *lefNode, *rightNode)
+PriorityQueue* insertTreeNodeOnPQ(PriorityQueue *pq, unsigned char, int frequency, Node *lefNode, *rightNode);
 PriorityQueue* StringtoQueue(unsigned char string[]);
-int queueLength(PriorityQueue *pq)
+int queueLength(PriorityQueue *pq);
 int QueueisEmpty(PriorityQueue *pq);
 void printPriorityQueue(PriorityQueue *pq);
-void freePriorityQueue(PriorityQueue* pq);
+void freePriorityQueue(PriorityQueue *pq);
 Node *dequeue(PriorityQueue *pq);
 
 

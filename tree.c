@@ -1,6 +1,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include "priorityqueue.c"
+#include "tree_declarations.h"
 
 struct tree{
   unsigned int size;
