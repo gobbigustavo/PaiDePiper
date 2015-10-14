@@ -3,7 +3,7 @@
 #include <string.h>
 #include "functions_declarations.h"
 
-char *ExtractFile(char file_address[]){
+unsigned char *ExtractFile(char file_address[]){
     FILE *fileptr;
     unsigned char *buffer;
     long filelen;

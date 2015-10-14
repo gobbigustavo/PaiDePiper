@@ -13,16 +13,16 @@ Tree *createTreeFromQueue(){
   tree->first = NULL;
   tree->size = 0;
   return tree;
-}
+};
 
 Tree *createTree(PriorityQueue *pq){
-  Node *leftNode, *rightNode;
+  Node *firstNode, *secondNode;
   Tree *huffTree = createTreeFromQueue();
   int frequencySum;
   while(queueLength(pq)>1){
     firstNode = dequeue(pq);
     secondNode = dequeue(pq);
-    frequencySum = leftNode->frequency + rightNode->frequency;
+    frequencySum = firstNode->frequency + secondNode->frequency;
     pq = insertTreeNodeOnPQ(pq, '*', frequencySum, firstNode, secondNode);
   }
   huffTree->first = pq->first;

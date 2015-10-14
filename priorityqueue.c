@@ -106,7 +106,7 @@ Node *dequeue(PriorityQueue *pq){
   return NULL;
 }
 
-PriorityQueue* insertTreeNodeOnPQ(PriorityQueue* pq, unsigned char, int frequency, Node *lefNode, *rightNode){
+PriorityQueue* insertTreeNodeOnPQ(PriorityQueue* pq, unsigned char character, int frequency, Node *leftNode, Node *rightNode){
     Node *newNode = (Node*) malloc(sizeof(Node));
     newNode->character = character;
     newNode->frequency = frequency;

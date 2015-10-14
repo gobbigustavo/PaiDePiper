@@ -6,5 +6,7 @@
 main()
 {
     char string[] = "teste_big.txt";
-    StringtoQueue(ExtractFile(string));
+    PriorityQueue* pq = createPriorityQueue();
+    pq = StringtoQueue(ExtractFile(string));
+    ///printPriorityQueue(pq);
 }
