@@ -1,15 +1,17 @@
 #ifndef PRIORITYQUEU_DECLARATIONS_H_
 #define PRIORITYQUEU_DECLARATIONS_H_
 
+typedef struct Node Node;
 typedef struct pqueue PriorityQueue;
 PriorityQueue* createPriorityQueue();
-PriorityQueue* enqueue(PriorityQueue *pq, char character, int priority);
-PriorityQueue* StringtoQueue(char string[]);
-int dequeue(PriorityQueue *pq);
-int maximum(PriorityQueue *pq);
+PriorityQueue* enqueue(PriorityQueue *pq, unsigned char character, int frequency);
+PriorityQueue* insertTreeNodeOnPQ(PriorityQueue* pq, unsigned char, int frequency, Node *lefNode, *rightNode)
+PriorityQueue* StringtoQueue(unsigned char string[]);
+int queueLength(PriorityQueue *pq)
 int QueueisEmpty(PriorityQueue *pq);
 void printPriorityQueue(PriorityQueue *pq);
 void freePriorityQueue(PriorityQueue* pq);
-typedef struct Node Node;
+Node *dequeue(PriorityQueue *pq);
+
 
 #endif
