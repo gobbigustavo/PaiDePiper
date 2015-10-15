@@ -4,5 +4,6 @@
 typedef struct tree Tree;
 Tree *createTreeFromQueue();
 Tree *createTree(PriorityQueue *pq);
+void printTreePreOrder(Node* node);
 
 #endif

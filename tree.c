@@ -15,6 +15,14 @@ Tree *createTreeFromQueue(){
   return tree;
 };
 
+void printTreePreOrder(Node* node){
+	if(node != NULL){
+		printf("%c - %d\n", node->character, node->frequency);
+		printTreePreOrder(node->leftNode);
+		printTreePreOrder(node->rightNode);
+	}
+}
+
 Tree *createTree(PriorityQueue *pq){
   Node *firstNode, *secondNode;
   Tree *huffTree = createTreeFromQueue();

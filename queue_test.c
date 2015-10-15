@@ -8,5 +8,7 @@ main()
     char string[] = "teste_big.txt";
     PriorityQueue* pq = createPriorityQueue();
     pq = StringtoQueue(ExtractFile(string));
-    ///printPriorityQueue(pq);
+    printPriorityQueue(pq);
+    Tree* t = createTree(pq);
+    printTreePreOrder(t->first);
 }

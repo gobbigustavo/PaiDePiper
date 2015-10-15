@@ -38,13 +38,13 @@ PriorityQueue* enqueue(PriorityQueue *pq, unsigned char character, int frequency
     Node *newNode = (Node*) malloc(sizeof(Node));
     newNode->character = character;
     newNode->frequency = frequency;
-    if ((QueueisEmpty(pq)) || (frequency > pq->first->frequency)) {
+    if ((QueueisEmpty(pq)) || (frequency < pq->first->frequency)) {
         newNode->nextNode = pq->first;
         pq->first = newNode;
     }
     else {
         Node *current = pq->first;
-        while ((current->nextNode != NULL) && (current->nextNode->frequency > frequency)) {
+        while ((current->nextNode != NULL) && (current->nextNode->frequency < frequency)) {
             current = current->nextNode;
         }
         newNode->nextNode = current->nextNode;
@@ -82,10 +82,10 @@ PriorityQueue* StringtoQueue(unsigned char string[]){
     }
     for(count = 0; count<256; count++){
         if(ascii[count]>=1){
-            if(count = 42){
+            if(count == 42){
                 enqueue(pq, '\*', ascii[count]);
             }
-            if(count = 92){
+            if(count == 92){
                 enqueue(pq, '\\', ascii[count]);
             }
             else{
@@ -96,14 +96,19 @@ PriorityQueue* StringtoQueue(unsigned char string[]){
     return pq;
 }
 
-Node *dequeue(PriorityQueue *pq){
-  if(!QueueisEmpty){
-    Node *current = pq->first;
-    pq->first = pq->first->leftNode;
-    current->nextNode = NULL;
-    return current;
-  }
-  return NULL;
+Node* dequeue(PriorityQueue *pq) {
+    if (!QueueisEmpty(pq)){
+        Node *current = pq->first;
+        Node *dequeued = (Node*) malloc(sizeof(Node));
+        memcpy(dequeued, current, sizeof(Node));
+        pq->first = pq->first->nextNode;
+        free(current);
+        return dequeued;
+    }
+    else {
+    printf("Empty priority queue!");
+    return NULL;
+    }
 }
 
 PriorityQueue* insertTreeNodeOnPQ(PriorityQueue* pq, unsigned char character, int frequency, Node *leftNode, Node *rightNode){
