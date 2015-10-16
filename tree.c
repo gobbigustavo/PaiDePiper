@@ -1,5 +1,6 @@
 #include<stdio.h>
 #include<stdlib.h>
+#include<string.h>
 #include "priorityqueue.c"
 #include "tree_declarations.h"
 
@@ -23,6 +24,20 @@ void printTreePreOrder(Node* node){
 	}
 }
 
+unsigned char* binarySearch(Node* first, unsigned char character, unsigned char huffChar[8]){
+    if((first == NULL) || (first->character == character)){
+        return huffChar;
+    }
+    else if(first->character > character){
+        strcat(huffChar, "0");
+        return binarySearch(first->leftNode, character, huffChar);
+    }
+    else{
+        strcat(huffChar, "1");
+        return binarySearch(first->rightNode, character, huffChar);
+    }
+}
+
 Tree *createTree(PriorityQueue *pq){
   Node *firstNode, *secondNode;
   Tree *huffTree = createTreeFromQueue();
@@ -35,4 +50,9 @@ Tree *createTree(PriorityQueue *pq){
   }
   huffTree->first = pq->first;
   return huffTree;
+}
+
+unsigned char* getHuffChar(Node* first, unsigned char character){
+    unsigned char* huffChar;
+    return binarySearch(first, character, huffChar);
 }
