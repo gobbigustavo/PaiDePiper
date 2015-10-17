@@ -1,11 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
-#include"List.c"
+//#include "functions.c"
 
 #define MAX_SIZE 8
 
-// FUNÇÕES GENERICAS, DEPOIS SERÃO USADAS A MESMA DA ARVORE Q CLARA VAI FAZER
 /*
 ESTRUTURAS NECESSÁRIAS:
     - HASH
@@ -22,97 +20,97 @@ int text_size;
 
 struct Node{
     char caracter;
-    int char_code[MAX_SIZE];
-    int char_code_size; ///quantidade de bits preenchidos no arquivo pós árvore
+    int code[MAX_SIZE];
+    int code_size; ///quantidade de bits preenchidos no arquivo pós árvore
 };
 typedef struct Node Node;
 
 struct Hash{
-    Node text[text_size];
+    Node* text[text_size];
 };
+typedef struct Hash Hash;
 
 char getCode(char byte) {
     /// pegar o código do byte na hash
     return ' ';
 }
-typedef struct Hash Hash;
 
 struct Queue{
 };
 typedef struct Queue Queue;
 
-struct List{
-    return 0;
-};
-typedef struct List List;
-
-List *CreateEmptyList(){
-    return;
-}
 
 struct Tree{
-    int item;
     int visited = 0;
+    unsigned char item;
     struct Tree *leftNode;
     struct Tree *rightNode;
     struct Tree *parent;
 };
 typedef struct Tree Tree;
 
-Tree *HuffTree(char caracter){
+/*Tree *HuffTree(char caracter){
     int code_array;
     return code_array;
-}
+}*/
+
+
+
+
 
 ///--------------------------------------------------ENCODE----------------------------------------------------------------------//
 
 ///o arquivo do texto tem q ser colocado numa string text com cada caractere em uma posição
-encode(char uncompressed_text){
+encode(FILE* uncompressedFile){
+
+    unsigned char uncompressed_text = ExtractFile(uncompressedFile);
 
     Hash* codeEntry;
 
-	ListNode *full_text = createList; ///lista composta de todos os array de bits pós compressão
+	Queue *toCompressQueue = createQueue; ///fila composta de todos os bits pós compressão
 
-    char compressed_byte = 0;
+    unsigned char compressed_byte = 0;
     int compressed_byte_length = 0;
     int compressed_text_length = 0;
     int uncompressed_text_index;
+    int trash_size = 0;
+    int code_index;
 
     for(uncompressed_text_index = 0; uncompressed_text_index < sizeof(uncompressed_text); uncompressed_text_index++) {
-        char uncompressed_byte = uncompressed_text[uncompressed_text_index];
-        Code codeEntry = getCode(uncompressed_byte); ///fazer função getCode
+        unsigned char uncompressed_byte = uncompressed_text[uncompressed_text_index];
+        Node* codeEntry = getCode(uncompressed_byte); ///----------------------fazer função getCode q retorna o nó
 
-        for(int code_index = 0; code_index < code_size; code_index++) {
+        for(code_index = 0; code_index < codeEntry->code_size; code_index++) {
             if(codeEntry->code[code_index] == 1) {
                 compressed_byte = (compressed_byte << 1) | 1;
-            } else {
+            }
+            else{
                 compressed_byte = (compressed_byte << 1);
             }
             compressed_byte_length++;
             compressed_text_length++;
             if(compressed_byte_length == 8) {
-                addToList(compressed_byte);
+                addToQueue(toCompressQueue, compressed_byte);
                 compressed_byte_length = 0;
             }
         }
     }
 
-    int trash_size = 0;
 
     if(compressed_byte_length != 0) {
         trash_size = 8 - compressed_byte_length;
         compressed_byte = compressed_byte << trash_size;
-        addToList(compressed_byte);
+        addToQueue(toCompressQueue, compressed_byte);
     }
 }
 
-    createHeader(int trash_size, unsigned int treeSize){
+    createHeader(int trash_size, unsigned int treeSizeEncode){
         unsigned char byte1, byte2, aux;
         byte1 = trash_size << 5;
-        aux = treeSize >>8;
+        aux = treeSizeEncode >>8;
         byte1 = byte1 | aux;
-        treeSize = treeSize & 255;
-        byte2 = (unsigned char) treeSize;
+        treeSizeEncode = treeSizeEncode & 255;
+        byte2 = (unsigned char) treeSizeEncode;
         ///------------- sobrescrever --------------///
     }
 
@@ -132,11 +130,11 @@ struct HeaderFiles{
 typedef struct HeaderFiles HeaderFiles;
 
 
-     void getCodeSize(File* compressedFile){
-        File *file = fopen(compressedFile, "r");
+     void getCodeSize(FILE* compressedFile){
+        FILE *file = fopen(compressedFile, "r");
         fseek(file, 0, SEEK_END);
         long int fileSize = ftell(file);
-        fileSize = fileSize - HeaderFiles->treeSize - 2; ///take the 2 header bytes and the tree size
+        fileSize = (fileSize - HeaderFiles->treeSize) - 2; ///take the 2 header bytes and the tree size
         HeaderFiles->fileSize = fileSize;
     }
 
@@ -161,15 +159,16 @@ typedef struct HeaderFiles HeaderFiles;
     }
 
 
-    void readHeader(File *compressedFile){
-        File *file = fopen(compressedFile, "r")
-        unsigned char byte1, byte2;
+    void readHeader(FILE *compressedFile, HeaderFiles* HeaderFiles){
+        FILE *file = fopen(compressedFile, "r");
+        unsigned char byte1;
+        unsigned char byte2;
         unsigned int treeSize;
         fread(&byte1, 1, 1, compressedFile);
         fread(&byte2, 1, 1, compressedFile);
 
-        int trash = getTrash(byte1)
-        unsigned int treeSize = getTreeSize(byte1, byte2);
+        int trash = getTrash(byte1);
+        treeSize = getTreeSize(byte1, byte2);
 
         unsigned char *tree = malloc(treeSize * (sizeof(unsigned char)));
 
@@ -178,7 +177,6 @@ typedef struct HeaderFiles HeaderFiles;
             fread(&tree[tree_index], 1, 1, compressedFile);
         }
         HeaderFiles->tree = malloc(treeSize * (sizeof(unsigned char)));
-
         HeaderFiles->tree = tree;
         HeaderFiles->trash = trash;
         HeaderFiles->treeSize = treeSize;
@@ -190,10 +188,12 @@ typedef struct HeaderFiles HeaderFiles;
     void rebuildTree(HeaderFiles* HeaderFiles, unsigned char tree){
         int rt_index;
 
-        Tree *rebuiltTree; ///criar nó vazio
-        Tree *aux = NULL;
+        Tree* rebuiltTree = malloc(sizeof(Tree)); ///criar nó vazio
+        Tree* aux = malloc(sizeof(Tree));
+        aux = NULL;
 
-        for(rt_index = 0; rt_index < treeSize; rt_index++){
+
+        for(rt_index = 0; rt_index < HeaderFiles->treeSize; rt_index++){
 
             if(tree[rt_index] == '*'){
                 if(rebuiltTree->visited == 0){ ///Root case
@@ -208,11 +208,11 @@ typedef struct HeaderFiles HeaderFiles;
                         rebuiltTree = rebuiltTree->leftNode;
                         rebuiltTree->item = tree[rt_index];
                         rebuiltTree->visited = 1;
-                        rebuitTree->parent = aux;
+                        rebuiltTree->parent = aux;
                     }
                    else if((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
                        aux = rebuiltTree;
-                       rebuiltTree = rebuiltTree->rightNode
+                       rebuiltTree = rebuiltTree->rightNode;
                        rebuiltTree->item = tree[rt_index];
                        rebuiltTree->visited = 1;
                        rebuiltTree->parent = aux;
@@ -225,6 +225,7 @@ typedef struct HeaderFiles HeaderFiles;
                     }
                 }
             }
+
             else{///leaf case
                 aux = rebuiltTree; ///vai até a folha, preenche ela e voltra pra o nó do meio
                 if(rebuiltTree->leftNode == NULL){
@@ -247,28 +248,32 @@ typedef struct HeaderFiles HeaderFiles;
                     rebuiltTree = rebuiltTree->parent;
                     rebuitTree->parent = aux;
                 }
+
             }
         }
     }
 
 
-    void runFunction(File *compressedFile, HeaderFiles* HeaderFiles){
-        getCodeSize(compressedFile);
-        readHeader(compressedFile);
-        getCodeBitSize(HeaderFiles* HeaderFiles);
-        rebuildTree(HeaderFiles* HeaderFiles);
+
+
+
+    void putBitOnTree(Tree* rebuiltTree, unsigned char current_bit){
+        Tree* root = rebuiltTree;
+        if(current_bit == '0'){
+            rebuiltTree = rebuiltTree->leftNode;
+        }
+        else if(current_bit == '1'){
+            rebuiltTree = rebuiltTree->rightNode;
+        }
+
+        if((rebuiltTree->leftNode != NULL) && (rebuiltTree->rightNode != NULL)){ ///leaf case
+            addToQueue(Queue *toDecompressQueue, rebuiltTree->item); /////////////////////////////FAZER
+            rebuiltTree = root;
+        }
     }
 
 
-decode(File *compressedFile){
-    fopen(compressedFile); ///descobrir se precisa de alguma outra função pra ler o arquivo
-    runFunction(compressedFile, HeaderFiles* HeaderFiles);
-
-
-
-}
-
-    bitThroughTree(Tree* rebuiltTree, File* compressedFile, HeaderFiles* HeaderFiles){
+   void bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles){
         int index, bit_index;
         unsigned char bytes = malloc(HeaderFiles->fileSize * (sizeof(unsigned char)));
         unsigned char current_bit;
@@ -279,14 +284,14 @@ decode(File *compressedFile){
                 for(bit_index = 7; bit_index >= 0; bit_index --){
                     current_bit = bytes[index] >> bit_index;
                     current_bit = current_bit & 1;
-                    putBitOnTree(current_bit);
+                    putBitOnTree(rebuiltTree, current_bit);
                 }
             }
             else{///se for o ultimo byte subtrai o lixo
                 for(bit_index = 7; bit_index > (7 - HeaderFiles->trash); bit_index--){
                     current_bit = bytes[index] >> bit_index;
                     current_bit = current_bit & 1;
-                    putBitOnTree(current_bit)
+                    putBitOnTree(rebuiltTree, current_bit);
 
                 }
             }
@@ -294,9 +299,38 @@ decode(File *compressedFile){
     }
 
 
+    void writeDecompressedFile(Queue* toDecompressQueue){
+        FILE * dFile;
+        dFile = fopen ("decompressed","w");
+        if (dFile != NULL){
+            printOnFile(toDecompressQueue, dFile);
+            fclose (dFile);
+        }
+    }
 
 
-     ///   FALTA :  PUTBITONTREE
+
+decode(FILE *compressedFile){
+    fopen(compressedFile, "r"); ///descobrir se precisa de alguma outra função pra ler o arquivo
+	Queue *toDecompressQueue = createQueue;
+    readHeader(FILE* compressedFile);
+    getCodeSize(FILE* compressedFile);
+    rebuildTree(HeaderFiles* HeaderFiles);
+    bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles);
+    writeDecompressedFile(Queue* decompressedQueue);
+
+
+}
+
+
+
+
+
+    ///-----------------------createEmptyHeader ---------------------------------------//
+
+
+
+
      ///            FILETREETOARRAY
 
 
