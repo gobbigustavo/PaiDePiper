@@ -3,6 +3,15 @@
 #include <string.h>
 #include "functions_declarations.h"
 
+unsigned char* alloc_char_array(int n){
+    unsigned char* array = (unsigned char*)calloc(n, sizeof(unsigned char));
+    if(array == NULL){
+        puts("Erro aloc. vetor");
+        exit(0);
+    }
+    return array;
+}
+
 unsigned char *ExtractFile(char file_address[]){
     FILE *fileptr;
     unsigned char *buffer;
@@ -19,6 +28,22 @@ unsigned char *ExtractFile(char file_address[]){
     return buffer;
 }
 
+void copyString(unsigned char array[], unsigned char* tree, unsigned char* compressedArray, unsigned int treeSize){
+    int i;
+    int tree_array_size = 1 + treeSize;
+    tree = alloc_char_array(tree_array_size);
+    int compressed_array_size = (strlen(array)) - tree_array_size;
+    compressedArray = alloc_char_array(compressed_array_size);
+
+    for(i = 1; i<=treeSize; i++){
+        tree[i-1] = array[i];
+    }
+
+    for(i = treeSize+1; i<=strlen(array); i++){
+        compressedArray[i] = array[i];
+    }
+
+}
 /* EXAMPLE OF USAGE
 int main()
 {
