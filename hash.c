@@ -25,6 +25,22 @@ Hashtable* createHashtable(){
     return ht;
 }
 
+int hashCode(unsigned char *string) {
+  int i;
+  int hashCode = 0;
+  int charCode;
+
+  if (strlen(string) == 0)
+    return 0;
+
+  for (i = 0; i < strlen(string); i++) {
+    charCode = string[i];
+    hashCode = ((hashCode << 5) - hashCode) + charCode;
+    hashCode = hashCode & hashCode;
+  }
+  return hashCode;
+}
+
 void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned char* char_huff){
     int h = hashCode(key);
     while (ht->table[h] != NULL){
@@ -53,22 +69,6 @@ Element* getHashElement(Hashtable *ht, unsigned char* key){
         h = (h + 1) % hashSize;
     return NULL;
     }
-}
-
-int hashCode(unsigned char *string) {
-  int i;
-  int hashCode = 0;
-  int charCode;
-
-  if (strlen(string) == 0)
-    return 0;
-
-  for (i = 0; i < strlen(string); i++) {
-    charCode = string[i];
-    hashCode = ((hashCode << 5) - hashCode) + charCode;
-    hashCode = hashCode & hashCode;
-  }
-  return hashCode;
 }
 
 int main(int argc, char const *argv[]){

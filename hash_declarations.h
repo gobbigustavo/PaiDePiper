@@ -3,6 +3,7 @@
 
 typedef struct hashtable Hashtable;
 typedef struct element Element;
+int hashCode(unsigned char *string);
 Hashtable* createHashtable();
 void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned char* char_huff);
 Element* getHashElement(Hashtable *ht, unsigned char* key);
