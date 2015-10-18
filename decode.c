@@ -179,7 +179,7 @@ typedef struct HeaderFiles HeaderFiles;
 
    void bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles){
         int index, bit_index;
-        unsigned char bytes [HeaderFiles->fileSize];
+        unsigned char *bytes = malloc(HeaderFiles->fileSize * sizeof(unsigned char));
         unsigned char current_bit;
 
         for(index = 0; index < HeaderFiles->fileSize; index++){
