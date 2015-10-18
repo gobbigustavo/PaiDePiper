@@ -18,14 +18,13 @@ FUNÇÕES NECESSÁRIAS:
 ///text_size armazenado em uma variavel global logo qd ler o arquivo
 int text_size;
 
-struct Node{
+typedef struct Node{
     char caracter;
     int code[MAX_SIZE];
     int code_size; ///quantidade de bits preenchidos no arquivo pós árvore
-};
-typedef struct Node Node;
+}Node;
 
-struct Hash{
+typedef struct Hash{
     Node* text[text_size];
 }Hash;
 
@@ -34,21 +33,22 @@ char getCode(char byte) {
     return ' ';
 }
 
-createQueue(){
-return;
+int createQueue(){
+return 0;
 }
 
 struct Queue{
-}Queue;
-
+};
+typedef struct Queue Queue;
 
 struct Tree{
-    int visited = 0;
+    int visited;
     unsigned char item;
     struct Tree *leftNode;
     struct Tree *rightNode;
     struct Tree *parent;
-}Tree;
+};
+typedef struct Tree Tree;
 
 /*Tree *HuffTree(char caracter){
     int code_array;
@@ -131,8 +131,15 @@ struct HeaderFiles{
 };
 typedef struct HeaderFiles HeaderFiles;
 
+//////////////////////////////fazer
+	void addToQueue(unsigned char item, Queue *toDecompressQueue){
 
-     void getCodeSize(FILE* compressedFile){
+	}
+
+
+
+
+     void getCodeSize(FILE* compressedFile, HeaderFiles* HeaderFiles){
         FILE *file = fopen(compressedFile, "r");
         fseek(file, 0, SEEK_END);
         long int fileSize = ftell(file);
@@ -189,8 +196,7 @@ typedef struct HeaderFiles HeaderFiles;
 
     void rebuildTree(HeaderFiles* HeaderFiles, unsigned char tree[]){
         int rt_index;
-
-        Tree* rebuiltTree = malloc(sizeof(Tree)); ///criar nó vazio
+        Tree* rebuiltTree = malloc(sizeof(Tree));
         Tree* aux;
 
         for(rt_index = 0; rt_index < HeaderFiles->treeSize; rt_index++){
@@ -210,7 +216,7 @@ typedef struct HeaderFiles HeaderFiles;
                         rebuiltTree->visited = 1;
                         rebuiltTree->parent = aux;
                     }
-                   else if((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
+                   else if((rebuiltTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
                        aux = rebuiltTree;
                        rebuiltTree = rebuiltTree->rightNode;
                        rebuiltTree->item = tree[rt_index];
@@ -234,19 +240,19 @@ typedef struct HeaderFiles HeaderFiles;
                     rebuiltTree->visited = 1;
                     rebuiltTree->parent = aux;
                 }
-                else if ((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
-                    rebuitTree = rebuitTree->rightNode;
+                else if ((rebuiltTree->leftNode != NULL)&&(rebuiltTree->rightNode == NULL)){
+                    rebuiltTree = rebuiltTree->rightNode;
                     rebuiltTree->item = tree[rt_index];
                     rebuiltTree->visited = 1;
-                    rebuitTree->parent = aux;
+                    rebuiltTree->parent = aux;
                 }
-                aux = rebuitTree->parent->parent;
+                aux = rebuiltTree->parent->parent;
                 rebuiltTree = rebuiltTree->parent;
-                rebuitTree->parent = aux;
-                if((rebuildTree->leftNode != NULL)&&(rebuiltTree->rightNode != NULL)){
-                    aux = rebuitTree->parent->parent;
+                rebuiltTree->parent = aux;
+                if((rebuiltTree->leftNode != NULL)&&(rebuiltTree->rightNode != NULL)){
+                    aux = rebuiltTree->parent->parent;
                     rebuiltTree = rebuiltTree->parent;
-                    rebuitTree->parent = aux;
+                    rebuiltTree->parent = aux;
                 }
 
             }
@@ -267,7 +273,7 @@ typedef struct HeaderFiles HeaderFiles;
         }
 
         if((rebuiltTree->leftNode != NULL) && (rebuiltTree->rightNode != NULL)){ ///leaf case
-            addToQueue(Queue *toDecompressQueue, rebuiltTree->item); /////////////////////////////FAZER
+        	addToQueue(unsigned char rebuiltTree->item, Queue *toDecompressQueue); /////////////////////////////FAZER
             rebuiltTree = root;
         }
     }
@@ -313,11 +319,11 @@ typedef struct HeaderFiles HeaderFiles;
 int decode(FILE *compressedFile){
     fopen(compressedFile, "r"); ///descobrir se precisa de alguma outra função pra ler o arquivo
 	Queue *toDecompressQueue = createQueue;
-    readHeader(FILE* compressedFile);
-    getCodeSize(FILE* compressedFile);
-    rebuildTree(HeaderFiles* HeaderFiles, );
-    bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles);
-    writeDecompressedFile(Queue* decompressedQueue);
+    void readHeader(FILE* compressedFile, HeaderFiles* HeaderFiles);
+    void getCodeSize(FILE* compressedFile, HeaderFiles* HeaderFiles);
+    void rebuildTree(HeaderFiles *HeaderFiles, unsigned char tree[]);
+    void bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles);
+    void writeDecompressedFile(Queue* decompressedQueue);
 
     return 0;
 }
