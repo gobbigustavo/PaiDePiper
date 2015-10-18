@@ -39,7 +39,7 @@ long int codeSize(FILE* uncompressedFile){
         Hashtable* hash; //hash pós arvore
         Hashtable* codeEntry;
 
-        Queue *toCompressQueue = createQueue; ///fila composta de todos os bits pós compressão
+        Queue *toCompressQueue = createQueue(); ///fila composta de todos os bits pós compressão
 
         unsigned char compressed_byte = 0;
         int compressed_byte_length = 0;
