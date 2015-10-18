@@ -8,7 +8,8 @@ const int hashSize = 256;
 struct element{
     int key;
     unsigned char character;
-    unsigned int char_huff;
+    unsigned char* char_huff;
+    int char_huff_size;
 };
 
 struct hashtable{
@@ -24,7 +25,7 @@ Hashtable* createHashtable(){
     return ht;
 }
 
-void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned int char_huff){
+void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned char* char_huff){
     int h = hashCode(key);
     while (ht->table[h] != NULL){
         if (ht->table[h]->key == h){
@@ -43,14 +44,14 @@ void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned in
     }
 }
 
-int get(Hashtable *ht, unsigned char* key){
+Element* getHashElement(Hashtable *ht, unsigned char* key){
     int h = hashCode(key);
     while(ht->table[h] != NULL){
         if (ht->table[h]->key == h){
-            return ht->table[h]->char_huff;
+            return ht->table[h];
         }
         h = (h + 1) % hashSize;
-    return -100;
+    return NULL;
     }
 }
 
@@ -73,9 +74,11 @@ int hashCode(unsigned char *string) {
 int main(int argc, char const *argv[]){
   unsigned char *string = "A";
   Hashtable* hash = createHashtable();
-  put(hash, "a", 'a', 1101);
+  put(hash, "a", 'a', "1101");
 
-  printf("%d\n", get(hash, "a"));
+  Element* node = getHashElement(hash, "a");
+
+  puts(node->char_huff);
 
   return 0;
 }
