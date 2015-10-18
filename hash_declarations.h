@@ -4,8 +4,8 @@
 typedef struct hashtable Hashtable;
 typedef struct element Element;
 Hashtable* createHashtable();
-void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned int char_huff);
-int get(Hashtable *ht, unsigned char* key);
+void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned char* char_huff);
+Element* getHashElement(Hashtable *ht, unsigned char* key);
 void printHashtable(Hashtable *ht);
 
 #endif // HASH_DECLARATIONS_H_
