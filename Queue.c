@@ -3,14 +3,11 @@
 #include <string.h>
 
 
-struct Queue{
+struct queue{
     int currentSize;
     int first;
     int items[];
-};
-typedef struct Queue Queue;
-
-
+};typedef struct queue Queue;
 
 Queue* createQueue() {
     Queue *queue = (Queue*) malloc(sizeof(Queue));

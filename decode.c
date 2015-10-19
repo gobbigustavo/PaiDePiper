@@ -1,8 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "functions.c"
-#include "Queue.c"
+#include "functions_declarations.h"
+#include "queue_declarations.h"
 
 #define MAX_SIZE 8
 
@@ -22,10 +22,22 @@ struct HeaderFiles{
     int trash;
     long int fileSize;
     //long int bitFileSize;
-    unsigned char tree;
+    unsigned char *tree;
     unsigned int treeSize;
 };
 typedef struct HeaderFiles HeaderFiles;
+
+
+    Tree* createTree(){
+        Tree* newTree = malloc(sizeof(Tree));
+        newTree->item = 0;
+        newTree->visited = 0;
+        newTree->leftNode = NULL;
+        newTree->rightNode = NULL;
+        newTree->parent = NULL;
+        return newTree;
+    }
+
 
 
 //fazer
@@ -36,8 +48,7 @@ typedef struct HeaderFiles HeaderFiles;
 
 
 
-     void getCodeSize(FILE* compressedFile, HeaderFiles* HeaderFiles){
-        FILE *file = fopen("compressedFile", "r");
+     void getCodeSize(FILE* file, HeaderFiles* HeaderFiles){
         fseek(file, 0, SEEK_END);
         long int fileSize = ftell(file);
         fileSize = (fileSize - HeaderFiles->treeSize) - 2; ///take the 2 header bytes and the tree size
@@ -65,13 +76,12 @@ typedef struct HeaderFiles HeaderFiles;
     }
 
 
-    void readHeader(FILE *compressedFile, HeaderFiles* HeaderFiles){
-        FILE *file = fopen("compressedFile", "r");
+    void readHeader(FILE *file, HeaderFiles* HeaderFiles){
         unsigned char byte1;
         unsigned char byte2;
         unsigned int treeSize;
-        fread(&byte1, 1, 1, compressedFile);
-        fread(&byte2, 1, 1, compressedFile);
+        fread(&byte1, 1, 1, file);
+        fread(&byte2, 1, 1, file);
 
         int trash = getTrash(byte1);
         treeSize = getTreeSize(byte1, byte2);
@@ -80,7 +90,7 @@ typedef struct HeaderFiles HeaderFiles;
 
         int tree_index;
         for (tree_index = 0; tree_index < treeSize; tree_index++){
-            fread(&tree[tree_index], 1, 1, compressedFile);
+            fread(&tree[tree_index], 1, 1, file);
         }
         HeaderFiles->tree = malloc(treeSize * (sizeof(unsigned char)));
         HeaderFiles->tree = tree;
@@ -91,9 +101,9 @@ typedef struct HeaderFiles HeaderFiles;
 
 //------END OF READHEADER ---------//
 
-    void rebuildTree(HeaderFiles* HeaderFiles, unsigned char tree[]){
+    void rebuildTree(HeaderFiles* HeaderFiles, unsigned char *tree){
         int rt_index;
-        Tree* rebuiltTree = malloc(sizeof(Tree));
+        Tree* rebuiltTree = createTree();
         Tree* aux;
 
         for(rt_index = 0; rt_index < HeaderFiles->treeSize; rt_index++){
@@ -177,13 +187,13 @@ typedef struct HeaderFiles HeaderFiles;
     }
 
 
-   void bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles){
+   void bitThroughTree(Tree* rebuiltTree, FILE* file, HeaderFiles* HeaderFiles){
         int index, bit_index;
         unsigned char *bytes = malloc(HeaderFiles->fileSize * sizeof(unsigned char));
         unsigned char current_bit;
 
         for(index = 0; index < HeaderFiles->fileSize; index++){
-            fread(&bytes[index], 1, 1, compressedFile); ///li 1 byte
+            fread(&bytes[index], 1, 1, file); ///li 1 byte
             if(index != (HeaderFiles->fileSize - 1)){ ///se não é o último byte
                 for(bit_index = 7; bit_index >= 0; bit_index --){
                     current_bit = bytes[index] >> bit_index;
@@ -215,13 +225,13 @@ typedef struct HeaderFiles HeaderFiles;
 
 
 int decode(FILE *compressedFile){
-    fopen("compressedFile", "r"); ///descobrir se precisa de alguma outra função pra ler o arquivo
-    void readHeader(FILE* compressedFile, HeaderFiles* HeaderFiles);
-    void getCodeSize(FILE* compressedFile, HeaderFiles* HeaderFiles);
-    void rebuildTree(HeaderFiles *HeaderFiles, unsigned char tree[]);
-    void bitThroughTree(Tree* rebuiltTree, FILE* compressedFile, HeaderFiles* HeaderFiles);
+    FILE *file = fopen("compressedFile", "r"); ///descobrir se precisa de alguma outra função pra ler o arquivo
+    void readHeader(FILE* file, HeaderFiles* HeaderFiles);
+    void getCodeSize(FILE* file, HeaderFiles* HeaderFiles);
+    void rebuildTree(HeaderFiles *HeaderFiles, unsigned char *tree);
+    void bitThroughTree(Tree* rebuiltTree, FILE* file, HeaderFiles* HeaderFiles);
     void writeDecompressedFile(Queue* decompressedQueue);
-
+    fclose(file);
     return 0;
 }
 

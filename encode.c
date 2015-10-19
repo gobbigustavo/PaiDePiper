@@ -1,9 +1,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include "functions.c"
-#include "hash.c"
-#include "Queue.c"
+#include "functions_declarations.h"
+#include "hash_declarations.h"
+#include "queue_declarations.h"
 
 #define MAX_SIZE 8
 
@@ -34,13 +34,14 @@ long int codeSize(FILE* uncompressedFile){
 ///o arquivo do texto tem q ser colocado numa string text com cada caractere em uma posição
     int encode(FILE* uncompressedFile){
     	long int fileSize = codeSize(uncompressedFile);
-        unsigned char uncompressed_text[fileSize];
-        strcpy(uncompressed_text, ExtractFile(uncompressedFile));
+        unsigned char *uncompressed_text = malloc(fileSize * sizeof(unsigned char));
+        uncompressed_text = ExtractFile(uncompressedFile);
         Hashtable* hash; //hash pós arvore
-        Hashtable* codeEntry;
+        Element* codeEntry = malloc(sizeof(Element));
 
         Queue *toCompressQueue = createQueue(); ///fila composta de todos os bits pós compressão
 
+        unsigned char *uncompressed_byte;
         unsigned char compressed_byte = 0;
         int compressed_byte_length = 0;
         int compressed_text_length = 0;
@@ -49,8 +50,8 @@ long int codeSize(FILE* uncompressedFile){
         int code_index;
 
         for(uncompressed_text_index = 0; uncompressed_text_index < sizeof(uncompressed_text); uncompressed_text_index++) {
-            unsigned char uncompressed_byte = uncompressed_text[uncompressed_text_index];
-            Element* codeEntry = getHashElement(hash, uncompressed_byte); //hash
+            uncompressed_byte = &uncompressed_text[uncompressed_text_index];
+            codeEntry = getHashElement(hash, uncompressed_byte); //hash
 
             for(code_index = 0; code_index < codeEntry->char_huff_size; code_index++) {
                 if(codeEntry->char_huff[code_index] == 1) {
