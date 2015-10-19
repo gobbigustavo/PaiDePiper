@@ -3,10 +3,10 @@
 
 typedef struct hashtable Hashtable;
 typedef struct element Element;
-int hashCode(unsigned char *string);
+int hashCode(unsigned char character);
 Hashtable* createHashtable();
-void put(Hashtable *ht, unsigned char* key, unsigned char character, unsigned char* char_huff);
-Element* getHashElement(Hashtable *ht, unsigned char* key);
+void put(Hashtable *ht, unsigned char character);
+Element* getHashElement(Hashtable *ht, unsigned char character);
 void printHashtable(Hashtable *ht);
 
 #endif // HASH_DECLARATIONS_H_
