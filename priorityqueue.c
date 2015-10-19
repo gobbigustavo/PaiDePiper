@@ -5,6 +5,7 @@
 
 struct Node {
     unsigned char character;
+    int visited;
     int frequency;
     Node *nextNode;
     Node *leftNode;

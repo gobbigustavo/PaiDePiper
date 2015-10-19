@@ -7,7 +7,6 @@ const int hashSize = 256;
 
 struct element{
     int key;
-    int visited;
     unsigned char character;
     unsigned char* char_huff;
     int char_huff_size;
