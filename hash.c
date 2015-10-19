@@ -7,6 +7,7 @@ const int hashSize = 256;
 
 struct element{
     int key;
+    int visited;
     unsigned char character;
     unsigned char* char_huff;
     int char_huff_size;
@@ -65,7 +66,7 @@ int hashCode(unsigned char character) {
     return hashCode;
 }
 
-int main(int argc, char const *argv[]){
+/*int main(int argc, char const *argv[]){
   unsigned char character = 'a';
   Hashtable* hash = createHashtable();
   put(hash, 'a', "1101");
@@ -73,5 +74,5 @@ int main(int argc, char const *argv[]){
   Element* ele = getHashElement(hash, 'a');
 
   return 0;
-}
+}*/
 

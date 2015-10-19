@@ -3,6 +3,7 @@
 #include<string.h>
 #include "priorityqueue.c"
 #include "tree_declarations.h"
+#include "hash.c"
 
 struct tree{
   unsigned int size;
@@ -24,29 +25,16 @@ void printTreePreOrder(Node* node){
 	}
 }
 
-unsigned char* binarySearch(Node* first, unsigned char character, unsigned char huffChar[8]){
-    if((first == NULL) || (first->character == character)){
-        return huffChar;
-    }
-    else if(first->character > character){
-        strcat(huffChar, "0");
-        return binarySearch(first->leftNode, character, huffChar);
-    }
-    else{
-        strcat(huffChar, "1");
-        return binarySearch(first->rightNode, character, huffChar);
-    }
-}
-
-/*unsigned char* treeSearch(Node* first, unsigned char character, unsigned char huffChar[8]){
+unsigned char* treeSearch(Node* first, unsigned char character){
     Node* currentNode = first;
-    ///Hashtable* hash = createHashtable();
+    unsigned char huffChar[8];
+    Hashtable* hash = createHashtable();
     while(currentNode->leftNode != NULL && currentNode->rightNode != NULL){
         currentNode = currentNode->leftNode;
         strcat(huffChar, "0");
     }
-    put(hash, currentNode->character);
-}*/
+    put(hash, currentNode->character, huffChar);
+}
 
 Tree *createTree(PriorityQueue *pq){
   Node *firstNode, *secondNode;
@@ -60,9 +48,4 @@ Tree *createTree(PriorityQueue *pq){
   }
   huffTree->first = pq->first;
   return huffTree;
-}
-
-unsigned char* getHuffChar(Node* first, unsigned char character){
-    unsigned char* huffChar;
-    return binarySearch(first, character, huffChar);
 }
