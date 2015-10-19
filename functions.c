@@ -12,16 +12,12 @@ unsigned char* alloc_char_array(int n){
     return array;
 }
 
-FILE* createFileFromAddress(char file_address[]){
-    FILE *file;
-    file = fopen(file_address, "rb"); // Open the file in binary mode
-    return file;
-}
-
 unsigned char *ExtractFile(FILE* fileptr){
     unsigned char *buffer;
     long filelen;
 
+    free(buffer);
+    ///fileptr = fopen(file_address, "rb");  // Open the file in binary mode
     fseek(fileptr, 0, SEEK_END);          // Jump to the end of the file
     filelen = ftell(fileptr);             // Get the current byte offset in the file
     rewind(fileptr);                      // Jump back to the beginning of the file
@@ -51,10 +47,7 @@ void copyString(unsigned char array[], unsigned char* tree, unsigned char* compr
 /* EXAMPLE OF USAGE
 int main()
 {
-
-    char* file_address = "teste.txt";
-    FILE* file = createFileFromAddress(file_address)
-    char* string = ExtractFile(file);
+    char *string = ExtractFile("teste.txt");
     printf("%s",string);
-}*/
-
+}
+*/

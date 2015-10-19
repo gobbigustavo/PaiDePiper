@@ -17,7 +17,11 @@ main()
     Tree* t = createTree(pq);
     printTreePreOrder(t->first);
     printf("\n");
-    ///printf("New representation of 'A': %d", getHuffChar(t->first, 'A'));
+    Hashtable* hash = treeSearch(t->first);
+    ///Element* node = getHashElement(hash, 'A');
+    ///printf("New representation of '%c': ", node->character);
+    ///puts(node->char_huff);
+
 
 /*
     char string[]="atirei o pau no gato";

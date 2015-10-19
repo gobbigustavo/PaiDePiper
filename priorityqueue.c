@@ -12,6 +12,15 @@ struct Node {
     Node *rightNode;
 };
 
+Node* createNode(unsigned char character , int frequency){
+	Node *newNode = (Node*)malloc(sizeof(Node));
+	newNode->frequency = frequency;
+	newNode->character = character;
+	newNode->leftNode  = NULL;
+	newNode->rightNode = NULL;
+	return newNode;
+}
+
 struct pqueue {
     Node *first;
 };
@@ -39,6 +48,8 @@ PriorityQueue* enqueue(PriorityQueue *pq, unsigned char character, int frequency
     Node *newNode = (Node*) malloc(sizeof(Node));
     newNode->character = character;
     newNode->frequency = frequency;
+    newNode->leftNode = NULL;
+    newNode->rightNode = NULL;
     if ((QueueisEmpty(pq)) || (frequency < pq->first->frequency)) {
         newNode->nextNode = pq->first;
         pq->first = newNode;

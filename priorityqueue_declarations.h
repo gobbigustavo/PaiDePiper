@@ -11,7 +11,8 @@ int queueLength(PriorityQueue *pq);
 int QueueisEmpty(PriorityQueue *pq);
 void printPriorityQueue(PriorityQueue *pq);
 void freePriorityQueue(PriorityQueue *pq);
-Node *dequeue(PriorityQueue *pq);
+Node* dequeue(PriorityQueue *pq);
+Node* createNode(unsigned char character, int frequency);
 
 
 #endif

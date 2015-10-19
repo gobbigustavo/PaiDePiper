@@ -5,6 +5,6 @@ typedef struct tree Tree;
 Tree *createTreeFromQueue();
 Tree *createTree(PriorityQueue *pq);
 void printTreePreOrder(Node* node);
-unsigned char* treeSearch(Node* first, unsigned char character);
+Hashtable* treeSearch(Node* first);
 
 #endif
