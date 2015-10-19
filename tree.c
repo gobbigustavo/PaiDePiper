@@ -24,6 +24,20 @@ void printTreePreOrder(Node* node){
 	}
 }
 
+unsigned char* binarySearch(Node* first, unsigned char character, unsigned char huffChar[8]){
+    if((first == NULL) || (first->character == character)){
+        return huffChar;
+    }
+    else if(first->character > character){
+        strcat(huffChar, "0");
+        return binarySearch(first->leftNode, character, huffChar);
+    }
+    else{
+        strcat(huffChar, "1");
+        return binarySearch(first->rightNode, character, huffChar);
+    }
+}
+
 /*unsigned char* treeSearch(Node* first, unsigned char character, unsigned char huffChar[8]){
     Node* currentNode = first;
     ///Hashtable* hash = createHashtable();
@@ -32,7 +46,6 @@ void printTreePreOrder(Node* node){
         strcat(huffChar, "0");
     }
     put(hash, currentNode->character);
-
 }*/
 
 Tree *createTree(PriorityQueue *pq){
@@ -49,7 +62,7 @@ Tree *createTree(PriorityQueue *pq){
   return huffTree;
 }
 
-/*unsigned char* getHuffChar(Node* first, unsigned char character){
+unsigned char* getHuffChar(Node* first, unsigned char character){
     unsigned char* huffChar;
-    return treeSearch(first, character, huffChar);
-}*/
+    return binarySearch(first, character, huffChar);
+}

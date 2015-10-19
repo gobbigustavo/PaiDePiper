@@ -3,7 +3,7 @@
 #include <string.h>
 #include "priorityqueue_declarations.h"
 
-struct Node{
+struct Node {
     unsigned char character;
     int frequency;
     Node *nextNode;
@@ -11,8 +11,7 @@ struct Node{
     Node *rightNode;
 };
 
-struct pqueue{
-
+struct pqueue {
     Node *first;
 };
 

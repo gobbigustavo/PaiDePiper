@@ -25,18 +25,7 @@ Hashtable* createHashtable(){
     return ht;
 }
 
-int hashCode(unsigned char character) {
-    int i;
-    int hashCode = 0;
-    int charCode;
-
-    charCode = character;
-    hashCode = ((hashCode << 5) - hashCode) + charCode;
-    hashCode = hashCode & hashCode;
-    return hashCode;
-}
-
-void put(Hashtable *ht, unsigned char character){
+void put(Hashtable *ht, unsigned char character, unsigned char* char_huff){
     int h = hashCode(character);
     while (ht->table[h] != NULL){
         if (ht->table[h]->key == h){
@@ -66,14 +55,22 @@ Element* getHashElement(Hashtable *ht, unsigned char character){
     }
 }
 
+int hashCode(unsigned char character) {
+    int i;
+    int hashCode = 0;
+    int charCode;
+    charCode = character;
+    hashCode = ((hashCode << 5) - hashCode) + charCode;
+    hashCode = hashCode & hashCode;
+    return hashCode;
+}
+
 int main(int argc, char const *argv[]){
-  unsigned char character = 'A';
+  unsigned char character = 'a';
   Hashtable* hash = createHashtable();
-  put(hash, 'A', "1101");
+  put(hash, 'a', "1101");
 
-  Element* node = getHashElement(hash, 'A');
-
-  puts(node->char_huff);
+  Element* ele = getHashElement(hash, 'a');
 
   return 0;
 }

@@ -5,11 +5,11 @@
 #include "tree.c"
 main()
 {
-    char file_address[] = "teste_big.txt";
-    FILE* fileout = fopen("fileout.txt", "wb");
+    char string[] = "teste_big.txt";
     PriorityQueue* pq = createPriorityQueue();
-    fprintf(fileout, ExtractFile(file_address));
-    pq = StringtoQueue(ExtractFile(file_address));
+    pq = StringtoQueue(ExtractFile(string));
+    FILE* file = fopen("testeout.txt", "wb");
+    fprintf(file, ExtractFile(string));
     printf("Priority Queue:\n\n");
     printPriorityQueue(pq);
     printf("\n");
@@ -18,4 +18,14 @@ main()
     printTreePreOrder(t->first);
     printf("\n");
     ///printf("New representation of 'A': %d", getHuffChar(t->first, 'A'));
+
+/*
+    char string[]="atirei o pau no gato";
+    int treeSize = 6;
+    unsigned char* tree;
+    unsigned char* compressedArray;
+
+    copyString(string, tree, compressedArray, treeSize);
+    puts(string);
+    puts(compressedArray);*/
 }

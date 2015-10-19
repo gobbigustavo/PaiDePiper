@@ -3,9 +3,9 @@
 
 typedef struct hashtable Hashtable;
 typedef struct element Element;
-int hashCode(unsigned char character);
 Hashtable* createHashtable();
-void put(Hashtable *ht, unsigned char character);
+int hashCode(unsigned char character);
+void put(Hashtable *ht, unsigned char character, unsigned char* char_huff);
 Element* getHashElement(Hashtable *ht, unsigned char character);
 void printHashtable(Hashtable *ht);
 
